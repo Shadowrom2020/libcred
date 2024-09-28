@@ -33,4 +33,4 @@ jobs:
         with:
           action: test
           directory: build
-          ninja-version: 1.12.1
+          ninja-version: 1.10.2
