@@ -25,20 +25,8 @@ jobs:
         run: |
           sudo apt install -y gnome-keyring dbus-x11
 
-      - name: Install mamba
-        uses: mamba-org/provision-with-micromamba@main
-        with:
-          environment-file: .github/environment.yml
-
       - name: Build
-        shell: bash -l {0}
-        run: |
-          if [[ ${{ matrix.os }} == 'ubuntu-latest' ]]; then
-            export $(dbus-launch)
-            export $(echo 'somerandompass' | gnome-keyring-daemon --unlock)
-          fi
-          meson setup builddir
-          cd builddir
-          ninja
-          ninja test
-          ./ex1
+        uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: test
+          directory: build
