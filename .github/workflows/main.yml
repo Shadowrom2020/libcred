@@ -26,16 +26,15 @@ jobs:
           sudo apt install -y gnome-keyring dbus-x11
 
       - name: Install mamba
+        if: matrix.os == 'ubuntu-latest'
         uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: .github/environment.yml
-          init-shell: >-
-            bash
-            powershell
           cache-environment: true
           post-cleanup: 'all'
 
-      - name: Build
+      - name: Build ubuntu
+        if: matrix.os == 'ubuntu-latest'
         shell: micromamba-shell {0}
         run: |
           if [[ ${{ matrix.os }} == 'ubuntu-latest' ]]; then
@@ -47,3 +46,10 @@ jobs:
           ninja
           ninja test
           ./ex1
+      
+      - name: Build windows and macos
+        uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: test
+          directory: build
+          ninja-version: 1.10.2
