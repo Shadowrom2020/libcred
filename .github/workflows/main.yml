@@ -31,7 +31,6 @@ jobs:
       - name: Prepare Ubuntu
         if: matrix.os == 'ubuntu-latest'
         run : |
-          sudo killall gnome-keyring-daemon -q
           eval "$(dbus-launch --sh-syntax)"
           mkdir -p ~/.cache
           mkdir -p ~/.local/share/keyrings
