@@ -31,16 +31,26 @@ jobs:
       - name: Prepare Ubuntu
         if: matrix.os == 'ubuntu-latest'
         run : |
-          eval "$(dbus-launch --sh-syntax)"
-          mkdir -p ~/.cache
-          mkdir -p ~/.local/share/keyrings
           eval "$(printf '\n' | gnome-keyring-daemon --unlock)"
           eval "$(printf '\n' | /usr/bin/gnome-keyring-daemon --start)"
           
-      - name: Build
+      - name: Build windows and macos
         uses: BSFishy/meson-build@v1.0.3
         if: matrix.os != 'ubuntu-latest'
         with:
           action: test
           directory: build
           ninja-version: 1.10.2
+
+      - name: Build ubuntu-lastest
+        shell: bash
+        run: |
+          export $(dbus-launch)
+          export $(echo 'somerandompass' | gnome-keyring-daemon --unlock)
+          eval "$(printf '\n' | gnome-keyring-daemon --unlock)"
+          eval "$(printf '\n' | /usr/bin/gnome-keyring-daemon --start)"
+          meson setup builddir
+          cd builddir
+          ninja
+          ninja test
+          ./ex1
