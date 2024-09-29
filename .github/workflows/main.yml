@@ -39,7 +39,7 @@ jobs:
           
       - name: Build
         uses: BSFishy/meson-build@v1.0.3
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os != 'ubuntu-latest'
         with:
           action: test
           directory: build
