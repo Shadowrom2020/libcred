@@ -27,7 +27,6 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt install -y gnome-keyring dbus-x11
-          sudo killall gnome-keyring-daemon
           eval "$(dbus-launch --sh-syntax)"
           mkdir -p ~/.cache
           mkdir -p ~/.local/share/keyrings
