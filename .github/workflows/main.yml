@@ -24,6 +24,14 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt install -y gnome-keyring dbus-x11 meson ninja-build
+          
+      - name: Build windows and macos
+        if: matrix.os == ('windows-test' || 'macos-latest')
+        uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: test
+          directory: build
+          ninja-version: 1.10.2
 
       - name: Install mamba
         if: matrix.os == 'ubuntu-latest'
@@ -46,11 +54,3 @@ jobs:
             ninja test
             exit
         shell: bash {0}
-      
-      - name: Build windows and macos
-        if: matrix.os == 'windows-test' || 'macos-latest'
-        uses: BSFishy/meson-build@v1.0.3
-        with:
-          action: test
-          directory: build
-          ninja-version: 1.10.2
