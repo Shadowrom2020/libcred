@@ -31,7 +31,7 @@ jobs:
           environment-file: .github/environment.yml
 
       - name: Build
-        shell: bash
+        shell: micromamba-shell {0}
         run: |
           if [[ ${{ matrix.os }} == 'ubuntu-latest' ]]; then
             export $(dbus-launch)
