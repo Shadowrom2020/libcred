@@ -36,14 +36,14 @@ jobs:
 
       - name: Build ubuntu
         if: matrix.os == 'ubuntu-latest'
-        shell: bash
-        run: |
-          export $(dbus-launch)
-          export $(echo 'somerandompass' | gnome-keyring-daemon --unlock)
-          meson setup builddir
-          cd builddir
-          ninja
-          ninja test
+      - run: |
+            export $(dbus-launch)
+            export $(echo 'somerandompass' | gnome-keyring-daemon --unlock)
+            meson setup builddir
+            cd builddir
+            ninja
+            ninja test
+        shell: bash {0}
       
       - name: Build windows and macos
         uses: BSFishy/meson-build@v1.0.3
