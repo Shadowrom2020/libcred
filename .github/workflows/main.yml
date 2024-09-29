@@ -45,7 +45,6 @@ jobs:
           cd builddir
           ninja
           ninja test
-          ./ex1
       
       - name: Build windows and macos
         uses: BSFishy/meson-build@v1.0.3
