@@ -49,6 +49,7 @@ jobs:
       
       - name: Build windows and macos
         uses: BSFishy/meson-build@v1.0.3
+        if: matrix.os != 'ubuntu-test'
         with:
           action: test
           directory: build
