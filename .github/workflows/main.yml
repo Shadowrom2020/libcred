@@ -26,18 +26,18 @@ jobs:
       - name: Install system deps for ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: |
-          sudo apt install -y gnome-keyring dbus-x11 libsecret
+          sudo apt install -y gnome-keyring dbus-x11
+          sudo killall gnome-keyring-daemon -q
+          eval "$(dbus-launch --sh-syntax)"
+          mkdir -p ~/.cache
+          mkdir -p ~/.local/share/keyrings
+          eval "$(printf '\n' | gnome-keyring-daemon --unlock)"
+          eval "$(printf '\n' | /usr/bin/gnome-keyring-daemon --start)"
 
       - name: Build
         uses: BSFishy/meson-build@v1.0.3
+        if: matrix.os == 'ubuntu-latest'
         with:
-          action: compile
+          action: test
           directory: build
-          run: |
-            eval "$(dbus-launch --sh-syntax)"
-            mkdir -p ~/.cache
-            mkdir -p ~/.local/share/keyrings
-            eval "$(printf '\n' | gnome-keyring-daemon --unlock)"
-            eval "$(printf '\n' | /usr/bin/gnome-keyring-daemon --start)"
-            ninja test
           ninja-version: 1.10.2
