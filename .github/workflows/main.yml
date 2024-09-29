@@ -48,8 +48,8 @@ jobs:
         shell: bash {0}
       
       - name: Build windows and macos
-        uses: BSFishy/meson-build@v1.0.3
         if: matrix.os != 'ubuntu-test'
+        uses: BSFishy/meson-build@v1.0.3
         with:
           action: test
           directory: build
