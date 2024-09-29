@@ -19,35 +19,24 @@ jobs:
     name: Compile and run tests
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v5.2.0
-        with:
-          python-version: 3.12
 
       - name: Install system deps for ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: |
-          sudo apt install -y gnome-keyring dbus-x11 meson ninja-build
+          sudo apt install -y gnome-keyring dbus-x11
 
-      - name: Prepare Ubuntu
-        if: matrix.os == 'ubuntu-latest'
-        run : |
-          eval "$(printf '\n' | gnome-keyring-daemon --unlock)"
-          eval "$(printf '\n' | /usr/bin/gnome-keyring-daemon --start)"
-          
-      - name: Build windows and macos
-        uses: BSFishy/meson-build@v1.0.3
-        if: matrix.os != 'ubuntu-latest'
+      - name: Install mamba
+        uses: mamba-org/provision-with-micromamba@main
         with:
-          action: test
-          directory: build
-          ninja-version: 1.10.2
+          environment-file: .github/environment.yml
 
-      - name: Build ubuntu-lastest
+      - name: Build
         shell: bash
         run: |
-          export $(dbus-launch)
-          export $(echo 'somerandompass' | gnome-keyring-daemon --unlock)
-          export $(echo 'somerandompass' | /usr/bin/gnome-keyring-daemon --start)
+          if [[ ${{ matrix.os }} == 'ubuntu-latest' ]]; then
+            export $(dbus-launch)
+            export $(echo 'somerandompass' | gnome-keyring-daemon --unlock)
+          fi
           meson setup builddir
           cd builddir
           ninja
