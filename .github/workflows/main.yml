@@ -47,7 +47,7 @@ jobs:
         run: |
           export $(dbus-launch)
           export $(echo 'somerandompass' | gnome-keyring-daemon --unlock)
-          export $(echo 'somerandompass' | /usr/bin/gnome-keyring-daemon --start)"
+          export $(echo 'somerandompass' | /usr/bin/gnome-keyring-daemon --start)
           meson setup builddir
           cd builddir
           ninja
