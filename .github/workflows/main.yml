@@ -32,15 +32,14 @@ jobs:
           environment-file: .github/environment.yml
           cache-environment: true
           post-cleanup: 'all'
+          init-shell: bash
 
       - name: Build ubuntu
         if: matrix.os == 'ubuntu-latest'
-        shell: micromamba-shell {0}
+        shell: bash
         run: |
-          if [[ ${{ matrix.os }} == 'ubuntu-latest' ]]; then
-            export $(dbus-launch)
-            export $(echo 'somerandompass' | gnome-keyring-daemon --unlock)
-          fi
+          export $(dbus-launch)
+          export $(echo 'somerandompass' | gnome-keyring-daemon --unlock)
           meson setup builddir
           cd builddir
           ninja
