@@ -48,7 +48,7 @@ jobs:
         shell: bash {0}
       
       - name: Build windows and macos
-        if: matrix.os != 'ubuntu-test'
+        if: matrix.os == 'windows-test' || 'macos-latest'
         uses: BSFishy/meson-build@v1.0.3
         with:
           action: test
