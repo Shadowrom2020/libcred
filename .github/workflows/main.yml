@@ -37,6 +37,7 @@ jobs:
       - name: Build ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: |
+            micromamba activate buildenv
             export $(dbus-launch)
             export $(echo 'somerandompass' | gnome-keyring-daemon --unlock)
             meson setup builddir
@@ -44,7 +45,7 @@ jobs:
             ninja
             ninja test
             exit
-        shell: micromamba-shell {0}
+        shell: bash {0}
       
       - name: Build windows and macos
         uses: BSFishy/meson-build@v1.0.3
