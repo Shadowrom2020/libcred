@@ -24,7 +24,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt install -y gnome-keyring dbus-x11 meson ninja-build
-          
+
       - name: Build windows and macos
         if: matrix.os == ('windows-test' || 'macos-latest')
         uses: BSFishy/meson-build@v1.0.3
@@ -39,18 +39,18 @@ jobs:
         with:
           environment-file: .github/environment.yml
           cache-environment: true
-          post-cleanup: 'all'
+          post-cleanup: "all"
           init-shell: bash
 
       - name: Build ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: |
-            micromamba activate buildenv
-            export $(dbus-launch)
-            export $(echo 'somerandompass' | gnome-keyring-daemon --unlock)
-            meson setup builddir
-            cd builddir
-            ninja
-            ninja test
-            exit
+          micromamba activate buildenv
+          export $(dbus-launch)
+          export $(echo 'somerandompass' | gnome-keyring-daemon --unlock)
+          meson setup builddir
+          cd builddir
+          ninja
+          ninja test
+          exit
         shell: bash {0}
