@@ -10,9 +10,6 @@ on:
 
 jobs:
   libcred:
-    defaults:
-      run:
-        shell: bash -leo pipefail {0}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -26,7 +23,7 @@ jobs:
       - name: Install system deps for ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: |
-          sudo apt install -y gnome-keyring dbus-x11
+          sudo apt install -y gnome-keyring dbus-x11 meson ninja-build
 
       - name: Install mamba
         if: matrix.os == 'ubuntu-latest'
@@ -46,7 +43,8 @@ jobs:
             cd builddir
             ninja
             ninja test
-        shell: bash {0}
+            exit
+        shell: micromamba-shell {0}
       
       - name: Build windows and macos
         uses: BSFishy/meson-build@v1.0.3
